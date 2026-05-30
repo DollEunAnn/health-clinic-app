@@ -1,0 +1,11 @@
+[
+  {
+    "licenseNumber": "1220",
+    "practitionerName": "Aldin Rien",
+    "medicalSpecialty": "Internal Medicine",
+    "consultationRoom": "",
+    "weeklyHours": "10",
+    "contactEmail": "ar@mail.com",
+    "isAcceptingPatient": true
+  }
+]

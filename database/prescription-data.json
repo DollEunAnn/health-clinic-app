@@ -1,0 +1,11 @@
+[
+  {
+    "rxNumber": 12201,
+    "patientRecordNumber": 1231,
+    "medicationName": "Paracetamol",
+    "dosageStrength": "500mg",
+    "frequencyPerDay": 2,
+    "refillsRemaining": 2,
+    "specialInstructions": "None"
+  }
+]

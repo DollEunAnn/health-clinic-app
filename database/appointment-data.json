@@ -1,0 +1,11 @@
+[
+  {
+    "doctorId": 1,
+    "patientName": "John Doe",
+    "patientEmail": "johndoe@example.com",
+    "visitDate": "2023-10-15",
+    "timeSlot": "10:00 AM - 11:00 AM",
+    "checkInStatus": false,
+    "primarySymptomDescription": "Headache"
+  }
+]

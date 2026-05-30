@@ -1,0 +1,11 @@
+[
+  {
+    "medicalRecordNumber": 1204,
+    "firstName": "Anna Marie",
+    "lastName": "Villanueva",
+    "dateOfBirth": "2012-01-30",
+    "gender": "female",
+    "contactEmail": "anna@mail.com",
+    "emergencyPhone": "0112-021-0211"
+  }
+]
