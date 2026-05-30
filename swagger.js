@@ -9,7 +9,7 @@ const doc = {
     version: "1.0.0",
   },
   host: isProd
-    ? "health-clinic-app.onrender.com/"
+    ? "health-clinic-app.onrender.com"
     : "localhost:3000",
   schemes: isProd ? ["https"] : ["http"],
 };
