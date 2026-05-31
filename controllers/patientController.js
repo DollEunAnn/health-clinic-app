@@ -2,6 +2,11 @@ const mongodb = require('../database/connect');
 const ObjectId = require('mongodb').ObjectId;
 
 const getAll = async (req, res) => {
+    /* 
+    #swagger.tags = ['Patients']
+    #swagger.summary = 'Get all patients'
+    */
+
     try {
         const result = await mongodb
         .getDatabase()

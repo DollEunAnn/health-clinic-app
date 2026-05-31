@@ -2,37 +2,39 @@
   "swagger": "2.0",
   "info": {
     "title": "Health Clinic API",
-    "description": "API documentation",
+    "description": "Health Clinic API allows you to manage patients, appointments, and medical records in a health clinic application.",
     "version": "1.0.0"
   },
   "host": "localhost:3000",
   "basePath": "/",
+  "tags": [
+    {
+      "name": "Patients",
+      "description": "Endpoints related to patient management"
+    },
+    {
+      "name": "Doctors",
+      "description": "Endpoints related to doctor management"
+    },
+    {
+      "name": "Appointments",
+      "description": "Endpoints related to appointment management"
+    },
+    {
+      "name": "Prescriptions",
+      "description": "Endpoints related to prescription management"
+    }
+  ],
   "schemes": [
     "http"
   ],
   "paths": {
     "/": {
       "get": {
-        "description": "",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api-docs": {
-      "get": {
-        "description": "",
-        "responses": {
-          "default": {
-            "description": ""
-          }
-        }
-      }
-    },
-    "/patients/": {
-      "get": {
+        "tags": [
+          "Patients"
+        ],
+        "summary": "Get all patients",
         "description": "",
         "produces": [
           "application/json"
