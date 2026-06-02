@@ -2,6 +2,7 @@ const swaggerAutogen = require("swagger-autogen")();
 
 const isProd = process.env.NODE_ENV === "production";
 
+// Modified by Raphael: Extended the endpoints mapping target to the index router file so it captures both patient and doctor sub-modules.
 const doc = {
   info: {
     title: "Health Clinic API",
@@ -33,7 +34,7 @@ const doc = {
 };
 
 const outputFile = "./swagger.json";
-// Include the other routes files that needs to be in the documentation
-const endpointsFiles = ["./routes/patientRoutes.js"];
+// Pointing to the main routing entry point file to parse all linked route collections automatically
+const endpointsFiles = ["./routes/index.js"];
 
 swaggerAutogen(outputFile, endpointsFiles, doc);
