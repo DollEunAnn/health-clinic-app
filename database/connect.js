@@ -10,7 +10,21 @@ const initDb = (callback) => {
     console.log('Database is already initialized!');
     return callback(null, database);
   }
-  MongoClient.connect(process.env.MONGODB_URI)
+  
+  let connectionString = process.env.MONGODB_URI;
+
+  // Dynamically inject credentials into placeholders for secure configuration management
+  if (connectionString && connectionString.includes('${DB_USER}')) {
+    connectionString = connectionString
+      .replace('${DB_USER}', process.env.DB_USER || '')
+      .replace('${DB_PASSWORD}', process.env.DB_PASSWORD || '');
+  }
+
+  if (!connectionString) {
+    return callback(new Error("MONGODB_URI environment variable is missing or empty."));
+  }
+
+  MongoClient.connect(connectionString)
     .then((client) => {
       database = client;
       callback(null, database);
