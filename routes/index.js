@@ -1,8 +1,7 @@
 const router = require('express').Router();
 
-router.use('/', require('./swaggerRoutes'));
-
 router.get('/', (req, res) => {
+     // #swagger.ignore = true
     res.send('Hello World!');
 });
 

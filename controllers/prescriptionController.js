@@ -9,6 +9,7 @@ const ObjectId = require('mongodb').ObjectId;
 
 const getAll = async(req, res) => {
     //#swagger.tags = ['Prescriptions']
+    // #swagger.summary = 'Get all prescriptions records.'
     try{
         const result = await mongodb.getDatabase().db('health_clinic_db').collection('prescriptions').find().toArray();
         res.setHeader('Content-Type', 'application/json');
@@ -20,6 +21,7 @@ const getAll = async(req, res) => {
 
 const getOne = async(req, res) => {
     //#swagger.tags = ['Prescriptions']
+    // #swagger.summary = 'Get a single prescription record by prescription id.'
     try{
         if (!ObjectId.isValid(req.params.id)){
             res.status(400).json('Must use a valid prescription id to find prescription')
@@ -35,6 +37,7 @@ const getOne = async(req, res) => {
 
 const writePrescription = async (req, res) => {
     //#swagger.tags = ['Prescriptions']
+    // #swagger.summary = 'Create a prescription record.'
     try{
         const prescription = {
         rxNumber: req.body.rxNumber,
@@ -55,7 +58,8 @@ const writePrescription = async (req, res) => {
 };
 
 const updatePrescription = async (req, res) => {
-    //#swagger.tags = ['Prescriptions']
+    // #swagger.tags = ['Prescriptions']
+    // #swagger.summary = 'Update a prescription record by prescription id.'
     try{
         if (!ObjectId.isValid(req.params.id)){
             res.status(400).json('Must use a valid prescription id to update prescription')
@@ -80,7 +84,8 @@ const updatePrescription = async (req, res) => {
 };
 
 const deletePrescription = async (req, res) => {
-    //#swagger.tags = ['Prescriptions']
+    // #swagger.tags = ['Prescriptions']
+    // #swagger.summary = 'Delete a prescription record by prescription id.'
     try{
         if (!ObjectId.isValid(req.params.id)){
             res.status(400).json('Must use a valid prescription id to delete prescription')
