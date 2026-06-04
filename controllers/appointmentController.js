@@ -9,6 +9,7 @@ const ObjectId = require('mongodb').ObjectId;
 
 const getAll = async(req, res) => {
     //#swagger.tags = ['Appointments']
+    //#swagger.summary = 'Endpoint to get all appointments.'
     try{
         const result = await mongodb.getDatabase().db('health_clinic_db').collection('appointments').find().toArray();
         res.setHeader('Content-Type', 'application/json');
@@ -20,6 +21,7 @@ const getAll = async(req, res) => {
 
 const getOne = async(req, res) => {
     //#swagger.tags = ['Appointments']
+    //#swagger.summary = 'Get a single appointment record by appointment id.'
     try{
         if (!ObjectId.isValid(req.params.id)){
             res.status(400).json('Must use a valid appointment id to find appointment')
@@ -35,6 +37,7 @@ const getOne = async(req, res) => {
 
 const bookAppointment = async (req, res) => {
     //#swagger.tags = ['Appointments']
+    //#swagger.summary = 'Book a new appointment.'
     try{
         const appointment = {
         doctorId: req.body.doctorId,
@@ -56,6 +59,7 @@ const bookAppointment = async (req, res) => {
 
 const updateAppointment = async (req, res) => {
     //#swagger.tags = ['Appointments']
+    //#swagger.summary = 'Update an appointment record by appointment id.'
     try{
         if (!ObjectId.isValid(req.params.id)){
             res.status(400).json('Must use a valid appointment id to update appointment')
@@ -81,6 +85,7 @@ const updateAppointment = async (req, res) => {
 
 const deleteAppointment = async (req, res) => {
     //#swagger.tags = ['Appointments']
+    //#swagger.summary = 'Delete an appointment record by appointment id.'  
     try{
         if (!ObjectId.isValid(req.params.id)){
             res.status(400).json('Must use a valid appointment id to delete appointment')

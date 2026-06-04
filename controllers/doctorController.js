@@ -4,6 +4,8 @@ const ObjectId = require('mongodb').ObjectId;
 // Added by Raphael: Full CRUD handlers built to process doctor records securely with explicit try/catch blocks.
 
 const getAll = async (req, res) => {
+    // #swagger.tags = ['Doctors']
+    // #swagger.summary = 'Get all doctors records.'
     try {
         const result = await mongodb
         .getDatabase()
@@ -20,6 +22,8 @@ const getAll = async (req, res) => {
 };
 
 const getSingle = async (req, res) => {
+    // #swagger.tags = ['Doctors']
+    // #swagger.summary = 'Get a single doctor record by doctor id.'
     try {
         if (!ObjectId.isValid(req.params.id)) {
             return res.status(400).json({ message: 'Must use a valid doctor ID to find a doctor.' });
@@ -44,6 +48,8 @@ const getSingle = async (req, res) => {
 };
 
 const createDoctor = async (req, res) => {
+    // #swagger.tags = ['Doctors']
+    // #swagger.summary = 'Create a doctor record.'
     try {
         const doctor = {
             staffId: req.body.staffId,
@@ -72,6 +78,8 @@ const createDoctor = async (req, res) => {
 };
 
 const updateDoctor = async (req, res) => {
+    // #swagger.tags = ['Doctors']
+    // #swagger.summary = 'Update a doctor record by doctor id.'
     try {
         if (!ObjectId.isValid(req.params.id)) {
             return res.status(400).json({ message: 'Must use a valid doctor ID to update a doctor.' });
@@ -104,6 +112,8 @@ const updateDoctor = async (req, res) => {
 };
 
 const deleteDoctor = async (req, res) => {
+    // #swagger.tags = ['Doctors']
+    // #swagger.summary = 'Delete a doctor record by doctor id.'
     try {
         if (!ObjectId.isValid(req.params.id)) {
             return res.status(400).json({ message: 'Must use a valid doctor ID to delete a doctor.' });
