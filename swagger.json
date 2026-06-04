@@ -29,28 +29,12 @@
     "http"
   ],
   "paths": {
-    "/": {
-      "get": {
-        "description": "",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api-docs": {
-      "get": {
-        "description": "",
-        "responses": {
-          "default": {
-            "description": ""
-          }
-        }
-      }
-    },
     "/patients/": {
       "get": {
+        "tags": [
+          "Patients"
+        ],
+        "summary": "Get all patients record.",
         "description": "",
         "produces": [
           "application/json"
@@ -65,6 +49,10 @@
         }
       },
       "post": {
+        "tags": [
+          "Patients"
+        ],
+        "summary": "Create a patient record.",
         "description": "",
         "parameters": [
           {
@@ -113,6 +101,10 @@
     },
     "/patients/{id}": {
       "get": {
+        "tags": [
+          "Patients"
+        ],
+        "summary": "Get a single patient record by patient id.",
         "description": "",
         "produces": [
           "application/json"
@@ -138,6 +130,10 @@
         }
       },
       "put": {
+        "tags": [
+          "Patients"
+        ],
+        "summary": "Update a patient record by patient id.",
         "description": "",
         "parameters": [
           {
@@ -190,6 +186,10 @@
         }
       },
       "delete": {
+        "tags": [
+          "Patients"
+        ],
+        "summary": "Delete a patient record by patient id.",
         "description": "",
         "parameters": [
           {
@@ -214,6 +214,10 @@
     },
     "/doctors/": {
       "get": {
+        "tags": [
+          "Doctors"
+        ],
+        "summary": "Get all doctors records.",
         "description": "",
         "produces": [
           "application/json"
@@ -228,6 +232,10 @@
         }
       },
       "post": {
+        "tags": [
+          "Doctors"
+        ],
+        "summary": "Create a doctor record.",
         "description": "",
         "parameters": [
           {
@@ -276,6 +284,10 @@
     },
     "/doctors/{id}": {
       "get": {
+        "tags": [
+          "Doctors"
+        ],
+        "summary": "Get a single doctor record by doctor id.",
         "description": "",
         "produces": [
           "application/json"
@@ -301,6 +313,10 @@
         }
       },
       "put": {
+        "tags": [
+          "Doctors"
+        ],
+        "summary": "Update a doctor record by doctor id.",
         "description": "",
         "parameters": [
           {
@@ -353,6 +369,10 @@
         }
       },
       "delete": {
+        "tags": [
+          "Doctors"
+        ],
+        "summary": "Delete a doctor record by doctor id.",
         "description": "",
         "parameters": [
           {
@@ -380,6 +400,7 @@
         "tags": [
           "Appointments"
         ],
+        "summary": "Endpoint to get all appointments.",
         "description": "",
         "produces": [
           "application/json"
@@ -397,6 +418,7 @@
         "tags": [
           "Appointments"
         ],
+        "summary": "Book a new appointment.",
         "description": "",
         "parameters": [
           {
@@ -445,6 +467,7 @@
         "tags": [
           "Appointments"
         ],
+        "summary": "Get a single appointment record by appointment id.",
         "description": "",
         "produces": [
           "application/json"
@@ -473,6 +496,7 @@
         "tags": [
           "Appointments"
         ],
+        "summary": "Update an appointment record by appointment id.",
         "description": "",
         "parameters": [
           {
@@ -528,6 +552,7 @@
         "tags": [
           "Appointments"
         ],
+        "summary": "Delete an appointment record by appointment id.",
         "description": "",
         "parameters": [
           {
@@ -555,6 +580,7 @@
         "tags": [
           "Prescriptions"
         ],
+        "summary": "Get all prescriptions records.",
         "description": "",
         "produces": [
           "application/json"
@@ -572,6 +598,7 @@
         "tags": [
           "Prescriptions"
         ],
+        "summary": "Create a prescription record.",
         "description": "",
         "parameters": [
           {
@@ -620,6 +647,7 @@
         "tags": [
           "Prescriptions"
         ],
+        "summary": "Get a single prescription record by prescription id.",
         "description": "",
         "produces": [
           "application/json"
@@ -648,6 +676,7 @@
         "tags": [
           "Prescriptions"
         ],
+        "summary": "Update a prescription record by prescription id.",
         "description": "",
         "parameters": [
           {
@@ -703,6 +732,7 @@
         "tags": [
           "Prescriptions"
         ],
+        "summary": "Delete a prescription record by prescription id.",
         "description": "",
         "parameters": [
           {
