@@ -10,4 +10,8 @@ router.get('/', (req, res) => {
 router.use('/patients', require('./patientRoutes'));
 router.use('/doctors', require('./doctorRoutes'));
 
+//Boiketlo:
+router.use('/appointments', require('./appointmentRoutes'));
+router.use('/prescriptions', require('./prescriptionRoutes'));
+
 module.exports = router;
