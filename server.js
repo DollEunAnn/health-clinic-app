@@ -21,8 +21,17 @@ console.log(`Node ENV variable: "${process.env.NODE_ENV}"`);
 console.log(`Swagger Host (from file): ${swaggerDocument.host}`);
 console.log(`Server running on: ${isProd ? 'https://health-clinic-app.onrender.com' : `http://localhost:${port}`}`);
 
-// DO NOT OVERRIDE - Use swagger.json as-is since it's pre-generated for the correct environment
-// The swagger.js file generates it based on NODE_ENV, so this should already be correct
+// DYNAMIC OVERRIDE: Automatically adjust Swagger UI based on environment
+// This allows the same swagger.json file to work locally AND on production
+if (isProd) {
+    swaggerDocument.host = 'health-clinic-app.onrender.com';
+    swaggerDocument.schemes = ['https'];
+    console.log(`Swagger override: Using production host`);
+} else {
+    swaggerDocument.host = `localhost:${port}`;
+    swaggerDocument.schemes = ['http'];
+    console.log(`Swagger override: Using local host`);
+}
 
 // Dynamically sets allowed CORS origins based on the execution domain context
 app.use(cors({ 
