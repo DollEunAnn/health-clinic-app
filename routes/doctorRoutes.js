@@ -1,17 +1,15 @@
 const express = require('express');
 const router = express.Router();
 const doctorController = require('../controllers/doctorController');
+const { isAuthenticated } = require('../middleware/authenticate');
 
-// Added by Raphael: Route endpoints mapping client requests to individual doctor CRUD controllers.
-
+// Public routes
 router.get('/', doctorController.getAll);
-
 router.get('/:id', doctorController.getSingle);
 
-router.post('/', doctorController.createDoctor);
-
-router.put('/:id', doctorController.updateDoctor);
-
-router.delete('/:id', doctorController.deleteDoctor);
+// Protected routes (requires login)
+router.post('/', isAuthenticated, doctorController.createDoctor);
+router.put('/:id', isAuthenticated, doctorController.updateDoctor);
+router.delete('/:id', isAuthenticated, doctorController.deleteDoctor);
 
 module.exports = router;
