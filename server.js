@@ -16,14 +16,13 @@ const app = express();
 
 const isProd = process.env.NODE_ENV === 'production';
 
-// DYNAMIC ENV OVERRIDE: Automatically routes the documentation UI destination
-if (isProd) {
-    swaggerDocument.host = 'health-clinic-app.onrender.com';
-    swaggerDocument.schemes = ['https'];
-} else {
-    swaggerDocument.host = `localhost:${port}`;
-    swaggerDocument.schemes = ['http'];
-}
+console.log(`Environment: ${isProd ? 'PRODUCTION' : 'LOCAL'}`);
+console.log(`Node ENV variable: "${process.env.NODE_ENV}"`);
+console.log(`Swagger Host (from file): ${swaggerDocument.host}`);
+console.log(`Server running on: ${isProd ? 'https://health-clinic-app.onrender.com' : `http://localhost:${port}`}`);
+
+// DO NOT OVERRIDE - Use swagger.json as-is since it's pre-generated for the correct environment
+// The swagger.js file generates it based on NODE_ENV, so this should already be correct
 
 // Dynamically sets allowed CORS origins based on the execution domain context
 app.use(cors({ 
@@ -35,18 +34,22 @@ app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Dynamic session engine configurations perfectly separated per environment context
-app.use(session({
+const sessionConfig = {
     secret: process.env.SESSION_SECRET || 'your-random-secret',
     resave: false,
-    saveUninitialized: false, 
+    saveUninitialized: false,
     cookie: {
         path: '/',
         domain: isProd ? 'health-clinic-app.onrender.com' : 'localhost',
         secure: isProd, // True on secure HTTPS production channels, false on HTTP local
-        sameSite: isProd ? 'none' : 'lax'
+        sameSite: isProd ? 'none' : 'lax',
+        maxAge: 24 * 60 * 60 * 1000 // 24 hours
     }
-}));
+};
 
+app.use(session(sessionConfig));
+
+// Initialize Passport.js AFTER session middleware
 app.use(passport.initialize());
 app.use(passport.session());
 
