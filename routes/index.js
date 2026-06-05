@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const passport = require('passport');
+const { isAuthenticated } = require('../middleware/authenticate');
 
 // Root path catch handler to bounce interface visits back to documentation UI engine
 router.get('/', (req, res) => {
@@ -37,7 +38,9 @@ router.get('/logout', (req, res, next) => {
         
         // 2. Wipe memory session data block matching the active node
         req.session.destroy((destroyErr) => {
-            if (destroyErr) { return next(destroyErr); }
+            if (destroyErr) { 
+                console.error('Session destroy error:', destroyErr);
+            }
             
             // 3. Clear cookie passing explicit parameters to clear respective browser domain state
             res.clearCookie('connect.sid', { 
@@ -47,10 +50,32 @@ router.get('/logout', (req, res, next) => {
                 sameSite: isProd ? 'none' : 'lax'
             }); 
             
-            // 4. Return user back to relative root entry route
-            res.redirect('/'); 
+            // 4. Return user directly to api-docs
+            res.redirect('/api-docs');
         });
     });
+});
+
+// Authentication status endpoint
+router.get('/auth-status', (req, res) => {
+    /* #swagger.ignore = true */
+    if (req.isAuthenticated()) {
+        res.json({
+            authenticated: true,
+            user: req.user
+        });
+    } else {
+        res.json({
+            authenticated: false,
+            user: null
+        });
+    }
+});
+
+// Test protected route - requires authentication
+router.get('/protected-test', isAuthenticated, (req, res) => {
+    /* #swagger.ignore = true */
+    res.json({ message: "You are authenticated!", user: req.user });
 });
 
 module.exports = router;
