@@ -7,15 +7,15 @@
 const express = require('express');
 const router = express.Router();
 const appointmentController = require('../controllers/appointmentController');
+const { isAuthenticated } = require('../middleware/authenticate'); // Import your gatekeeper
 
+// Public routes
 router.get('/', appointmentController.getAll);
-
 router.get('/:id', appointmentController.getOne);
 
-router.post('/', appointmentController.bookAppointment);
-
-router.put('/:id', appointmentController.updateAppointment);
-
-router.delete('/:id', appointmentController.deleteAppointment);
+// Protected routes (requires login)
+router.post('/', isAuthenticated, appointmentController.bookAppointment);
+router.put('/:id', isAuthenticated, appointmentController.updateAppointment);
+router.delete('/:id', isAuthenticated, appointmentController.deleteAppointment);
 
 module.exports = router;

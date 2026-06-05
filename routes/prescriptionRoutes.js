@@ -7,15 +7,15 @@
 const express = require('express');
 const router = express.Router();
 const prescriptionController = require('../controllers/prescriptionController');
+const { isAuthenticated } = require('../middleware/authenticate'); // Import your gatekeeper
 
+// Public routes
 router.get('/', prescriptionController.getAll);
-
 router.get('/:id', prescriptionController.getOne);
 
-router.post('/', prescriptionController.writePrescription);
-
-router.put('/:id', prescriptionController.updatePrescription);
-
-router.delete('/:id', prescriptionController.deletePrescription);
+// Protected routes (requires login)
+router.post('/', isAuthenticated, prescriptionController.writePrescription);
+router.put('/:id', isAuthenticated, prescriptionController.updatePrescription);
+router.delete('/:id', isAuthenticated, prescriptionController.deletePrescription);
 
 module.exports = router;

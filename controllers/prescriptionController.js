@@ -1,6 +1,7 @@
 // ============================================
 // PRESCRIPTION CONTROLLER
 // Author: Boiketlo
+// Modifications: Raphael (Fixed 201 status code return and insertion acknowledgment validation)
 // Description: Logic for prescription CRUD operations
 // ============================================
 
@@ -24,7 +25,7 @@ const getOne = async(req, res) => {
     // #swagger.summary = 'Get a single prescription record by prescription id.'
     try{
         if (!ObjectId.isValid(req.params.id)){
-            res.status(400).json('Must use a valid prescription id to find prescription')
+            return res.status(400).json('Must use a valid prescription id to find prescription');
         }
         const prescriptionId = new ObjectId(req.params.id);
         const result = await mongodb.getDatabase().db('health_clinic_db').collection('prescriptions').find({_id: prescriptionId }).toArray();
@@ -49,8 +50,10 @@ const writePrescription = async (req, res) => {
         specialInstructions : req.body.specialInstructions
         };
         const response = await mongodb.getDatabase().db('health_clinic_db').collection('prescriptions').insertOne(prescription);
-        if (response.acknowledged > 0) {
-            res.status(204).send();
+        if (response.acknowledged) {
+            res.status(201).json(response);
+        } else {
+            res.status(500).json({message: 'Some error occurred while creating the prescription.'});
         }
     } catch(err){
         res.status(500).json({message: err});
@@ -62,7 +65,7 @@ const updatePrescription = async (req, res) => {
     // #swagger.summary = 'Update a prescription record by prescription id.'
     try{
         if (!ObjectId.isValid(req.params.id)){
-            res.status(400).json('Must use a valid prescription id to update prescription')
+            return res.status(400).json('Must use a valid prescription id to update prescription');
         }
         const prescriptionId = new ObjectId(req.params.id);
         const prescription = {
@@ -77,6 +80,8 @@ const updatePrescription = async (req, res) => {
         const response = await mongodb.getDatabase().db('health_clinic_db').collection('prescriptions').replaceOne({_id: prescriptionId}, prescription);
         if (response.modifiedCount > 0) {
             res.status(204).send();
+        } else {
+            res.status(500).json({message: 'Some error occurred while updating the prescription.'});
         }
     } catch(err){
         res.status(500).json({message: err});
@@ -88,12 +93,14 @@ const deletePrescription = async (req, res) => {
     // #swagger.summary = 'Delete a prescription record by prescription id.'
     try{
         if (!ObjectId.isValid(req.params.id)){
-            res.status(400).json('Must use a valid prescription id to delete prescription')
+            return res.status(400).json('Must use a valid prescription id to delete prescription');
         }
         const prescriptionId  = new ObjectId(req.params.id);
         const response = await mongodb.getDatabase().db('health_clinic_db').collection('prescriptions').deleteOne({_id: prescriptionId }, true);
         if (response.deletedCount > 0) {
             res.status(204).send();
+        } else {
+            res.status(500).json({message: 'Some error occurred while deleting the prescription.'});
         }
     } catch(err){
         res.status(500).json({message: err});
