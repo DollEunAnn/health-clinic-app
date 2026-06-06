@@ -59,7 +59,12 @@ app.use(session(sessionConfig));
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, {
+    swaggerOptions: {
+        withCredentials: true
+    }
+}));
+
 app.use('/', require('./routes'));
 
 process.on('uncaughtException', (err, origin) => {
