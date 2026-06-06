@@ -1,16 +1,19 @@
+// doctorController.js
+// Raphael Daveal | Health Clinic App | CSE 341
+
 const mongodb = require('../database/connect');
 const ObjectId = require('mongodb').ObjectId;
-
-// Added by Raphael: Full CRUD handlers built to process doctor records securely with explicit try/catch blocks.
+const { validate, doctorRules } = require('../helpers/validator');
 
 const getAll = async (req, res) => {
+    // #swagger.tags = ['Doctors']
+    // #swagger.summary = 'Get all doctors records.'
     try {
         const result = await mongodb
-        .getDatabase()
-        .db('health_clinic_db')
-        .collection('doctors')
-        .find()
-        .toArray();
+            .getDatabase()
+            .collection('doctors')
+            .find()
+            .toArray();
 
         res.setHeader('Content-Type', 'application/json');
         res.status(200).json(result);
@@ -20,17 +23,18 @@ const getAll = async (req, res) => {
 };
 
 const getSingle = async (req, res) => {
+    // #swagger.tags = ['Doctors']
+    // #swagger.summary = 'Get a single doctor record by doctor id.'
     try {
         if (!ObjectId.isValid(req.params.id)) {
             return res.status(400).json({ message: 'Must use a valid doctor ID to find a doctor.' });
         }
         const doctorId = new ObjectId(req.params.id);
         const result = await mongodb
-        .getDatabase()
-        .db('health_clinic_db')
-        .collection('doctors')
-        .find({ _id: doctorId })
-        .toArray();
+            .getDatabase()
+            .collection('doctors')
+            .find({ _id: doctorId })
+            .toArray();
 
         if (result.length === 0) {
             return res.status(404).json({ message: 'Doctor not found.' });
@@ -44,7 +48,14 @@ const getSingle = async (req, res) => {
 };
 
 const createDoctor = async (req, res) => {
+    // #swagger.tags = ['Doctors']
+    // #swagger.summary = 'Create a doctor record.'
     try {
+        const { passes, errors } = validate(req.body, doctorRules);
+        if (!passes) {
+            return res.status(400).json({ message: 'Validation failed.', errors });
+        }
+
         const doctor = {
             staffId: req.body.staffId,
             practitionerName: req.body.practitionerName,
@@ -56,10 +67,9 @@ const createDoctor = async (req, res) => {
         };
 
         const response = await mongodb
-        .getDatabase()
-        .db('health_clinic_db')
-        .collection('doctors')
-        .insertOne(doctor);
+            .getDatabase()
+            .collection('doctors')
+            .insertOne(doctor);
 
         if (response.acknowledged) {
             res.status(201).json(response);
@@ -72,10 +82,18 @@ const createDoctor = async (req, res) => {
 };
 
 const updateDoctor = async (req, res) => {
+    // #swagger.tags = ['Doctors']
+    // #swagger.summary = 'Update a doctor record by doctor id.'
     try {
         if (!ObjectId.isValid(req.params.id)) {
             return res.status(400).json({ message: 'Must use a valid doctor ID to update a doctor.' });
         }
+
+        const { passes, errors } = validate(req.body, doctorRules);
+        if (!passes) {
+            return res.status(400).json({ message: 'Validation failed.', errors });
+        }
+
         const doctorId = new ObjectId(req.params.id);
         const doctor = {
             staffId: req.body.staffId,
@@ -88,10 +106,9 @@ const updateDoctor = async (req, res) => {
         };
 
         const response = await mongodb
-        .getDatabase()
-        .db('health_clinic_db')
-        .collection('doctors')
-        .replaceOne({ _id: doctorId }, doctor);
+            .getDatabase()
+            .collection('doctors')
+            .replaceOne({ _id: doctorId }, doctor);
 
         if (response.modifiedCount > 0) {
             res.status(204).send();
@@ -104,21 +121,22 @@ const updateDoctor = async (req, res) => {
 };
 
 const deleteDoctor = async (req, res) => {
+    // #swagger.tags = ['Doctors']
+    // #swagger.summary = 'Delete a doctor record by doctor id.'
     try {
         if (!ObjectId.isValid(req.params.id)) {
             return res.status(400).json({ message: 'Must use a valid doctor ID to delete a doctor.' });
         }
         const doctorId = new ObjectId(req.params.id);
         const response = await mongodb
-        .getDatabase()
-        .db('health_clinic_db')
-        .collection('doctors')
-        .deleteOne({ _id: doctorId });
+            .getDatabase()
+            .collection('doctors')
+            .deleteOne({ _id: doctorId });
 
         if (response.deletedCount > 0) {
-            res.status(200).json(response);
+            res.status(204).send();
         } else {
-            res.status(500).json({ message: 'Some error occurred while deleting the doctor.' });
+            res.status(500).json({ message: 'Some error occurred while updating the doctor.' });
         }
     } catch (error) {
         res.status(400).json({ message: error.message || error });
