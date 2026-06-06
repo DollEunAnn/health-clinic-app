@@ -18,9 +18,13 @@ const port = process.env.PORT || 3000;
 const app = express();
 
 const isProd = process.env.NODE_ENV === 'production';
+const isStaging = process.env.NODE_ENV === 'staging';
 
 if (isProd) {
     swaggerDocument.host = 'health-clinic-app.onrender.com';
+    swaggerDocument.schemes = ['https', 'http'];
+} else if (isStaging) {
+    swaggerDocument.host = 'health-clinic-app-staging.onrender.com';
     swaggerDocument.schemes = ['https', 'http'];
 } else {
     swaggerDocument.host = `localhost:${port}`;
@@ -28,7 +32,11 @@ if (isProd) {
 }
 
 app.use(cors({
-    origin: isProd ? 'https://health-clinic-app.onrender.com' : `http://localhost:${port}`,
+    origin: isProd
+        ? 'https://health-clinic-app.onrender.com'
+        : isStaging
+        ? 'https://health-clinic-app-staging.onrender.com'
+        : `http://localhost:${port}`,
     credentials: true
 }));
 
@@ -41,8 +49,8 @@ const sessionConfig = {
     saveUninitialized: false,
     cookie: {
         path: '/',
-        secure: isProd,
-        sameSite: isProd ? 'none' : 'lax',
+        secure: isProd || isStaging,
+        sameSite: isProd || isStaging ? 'none' : 'lax',
         maxAge: 24 * 60 * 60 * 1000
     }
 };
