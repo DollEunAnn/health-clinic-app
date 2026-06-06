@@ -1,0 +1,18 @@
+# Exported from Render on 2026-06-06T02:24:14Z
+version: "1"
+services:
+  - type: web
+    name: health-clinic-app
+    runtime: go
+    repo: https://github.com/DollEunAnn/health-clinic-app
+    branch: main
+    plan: free
+    envVars:
+      - key: MONGODB_URI
+        sync: false
+      - key: NODE_ENV
+        sync: false
+    region: singapore
+    buildCommand: npm install && npm run build
+    startCommand: node server.js
+    autoDeployTrigger: commit
