@@ -33,8 +33,10 @@ describe('Doctor Routes', () => {
     describe('GET /doctors/:id', () => {
         it('should return a single doctor with a 200 status code', async () => {
             const all = await request(app).get('/doctors');
+            expect(all.statusCode).toBe(200);
+            expect(Array.isArray(all.body)).toBe(true);
+            expect(all.body.length).toBeGreaterThan(0);
             const id = all.body[0]._id;
-            const res = await request(app).get(`/doctors/${id}`);
             expect(res.statusCode).toBe(200);
             expect(res.body).toHaveProperty('_id');
         }, 15000);
