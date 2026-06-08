@@ -71,13 +71,17 @@ process.on('uncaughtException', (err, origin) => {
     console.error(`Caught exception: ${err}\nException origin: ${origin}`);
 });
 
-mongodb.initDb((err) => {
-    if (err) {
-        console.error(err.message || err);
-        process.exit(1);
-    } else {
-        app.listen(port, () => {
-            console.log(`Running on port ${port}`);
-        });
-    }
-});
+module.exports = app;
+
+if (require.main === module) {
+    mongodb.initDb((err) => {
+        if (err) {
+            console.error(err.message || err);
+            process.exit(1);
+        } else {
+            app.listen(port, () => {
+                console.log(`Running on port ${port}`);
+            });
+        }
+    });
+}
