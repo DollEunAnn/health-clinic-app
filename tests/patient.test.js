@@ -6,15 +6,19 @@ const request = require('supertest');
 const app = require('../server');
 const mongodb = require('../database/connect');
 
+let dbClient;
+
 beforeAll((done) => {
-    mongodb.initDb((err) => {
-        if (err) done(err);
-        else done();
+    mongodb.initDb((err, client) => {
+        if (err) return done(err);
+        dbClient = client;
+        done();
     });
 }, 30000);
 
 afterAll((done) => {
-    done();
+    if (!dbClient) return done();
+    dbClient.close().then(() => done()).catch(done);
 });
 
 describe('Patient Routes', () => {
