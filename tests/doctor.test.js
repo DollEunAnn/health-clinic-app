@@ -1,6 +1,7 @@
 // doctor.test.js
 // Raphael Daveal | Health Clinic App | CSE 341
 
+require('dotenv').config();
 const request = require('supertest');
 const app = require('../server');
 const mongodb = require('../database/connect');
@@ -10,7 +11,7 @@ beforeAll((done) => {
         if (err) done(err);
         else done();
     });
-});
+}, 30000);
 
 afterAll((done) => {
     done();
@@ -22,7 +23,7 @@ describe('Doctor Routes', () => {
             const res = await request(app).get('/doctors');
             expect(res.statusCode).toBe(200);
             expect(Array.isArray(res.body)).toBe(true);
-        });
+        }, 15000);
     });
 
     describe('GET /doctors/:id', () => {
@@ -32,18 +33,18 @@ describe('Doctor Routes', () => {
             const res = await request(app).get(`/doctors/${id}`);
             expect(res.statusCode).toBe(200);
             expect(res.body).toHaveProperty('_id');
-        });
+        }, 15000);
 
         it('should return 400 for an invalid doctor ID', async () => {
             const res = await request(app).get('/doctors/invalidid');
             expect(res.statusCode).toBe(400);
             expect(res.body).toHaveProperty('message');
-        });
+        }, 15000);
 
         it('should return 404 for a valid but non-existent doctor ID', async () => {
             const res = await request(app).get('/doctors/000000000000000000000000');
             expect(res.statusCode).toBe(404);
             expect(res.body).toHaveProperty('message');
-        });
+        }, 15000);
     });
 });
