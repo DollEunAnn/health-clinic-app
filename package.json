@@ -15,7 +15,7 @@
   "type": "commonjs",
   "main": "server.js",
   "scripts": {
-    "test": "jest --testPathPatterns=tests/ --forceExit",
+    "test": "jest --testPathPatterns=tests/ --detectOpenHandles",
     "start": "node server.js",
     "dev": "NODE_ENV=development node server.js",
     "swagger": "node swagger.js",
