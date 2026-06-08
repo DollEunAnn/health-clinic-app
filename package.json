@@ -15,7 +15,7 @@
   "type": "commonjs",
   "main": "server.js",
   "scripts": {
-    "test": "jest --testPathPattern=tests/ --forceExit",
+    "test": "jest --testPathPatterns=tests/ --forceExit",
     "start": "node server.js",
     "dev": "NODE_ENV=development node server.js",
     "swagger": "node swagger.js",
