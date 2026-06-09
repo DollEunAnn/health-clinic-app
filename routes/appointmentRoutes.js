@@ -1,19 +1,14 @@
-// ============================================
-// APPOINTMENT ROUTES
-// Author: Boiketlo
-// Description: Handles all appointment-related endpoints
-// ============================================
+// appointmentRoutes.js
+// Boiketlo Nzimande | Health Clinic App | CSE 341
 
 const express = require('express');
 const router = express.Router();
 const appointmentController = require('../controllers/appointmentController');
-const { isAuthenticated } = require('../middleware/authenticate'); // Import your gatekeeper
+const { isAuthenticated } = require('../middleware/authenticate');
 
-// Public routes
 router.get('/', appointmentController.getAll);
 router.get('/:id', appointmentController.getOne);
 
-// Protected routes (requires login)
 router.post('/', isAuthenticated, appointmentController.bookAppointment);
 router.put('/:id', isAuthenticated, appointmentController.updateAppointment);
 router.delete('/:id', isAuthenticated, appointmentController.deleteAppointment);

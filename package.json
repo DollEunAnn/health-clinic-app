@@ -13,9 +13,9 @@
   "license": "ISC",
   "author": "",
   "type": "commonjs",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest --testPathPatterns=tests/ --detectOpenHandles",
     "start": "node server.js",
     "dev": "NODE_ENV=development node server.js",
     "swagger": "node swagger.js",
@@ -27,7 +27,6 @@
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
     "express-session": "^1.19.0",
-    "globals": "^17.6.0",
     "mongodb": "^7.2.0",
     "passport": "^0.7.0",
     "passport-google-oauth20": "^2.0.0",
@@ -36,6 +35,7 @@
     "validatorjs": "^3.22.1"
   },
   "devDependencies": {
+    "globals": "^17.6.0",
     "jest": "^30.4.2",
     "supertest": "^7.2.2"
   },
