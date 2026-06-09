@@ -24,13 +24,20 @@ router.get('/auth/google/callback', (req, res, next) => {
     /* #swagger.ignore = true */
     passport.authenticate('google', { failureRedirect: '/api-docs' })(req, res, next);
 }, (req, res) => {
-    res.redirect('/api-docs');
+    res.set('Cache-Control', 'no-store, no-cache, must-revalidate, private');
+    req.session.save((err) => {
+        if (err) {
+            console.error('Session save error:', err);
+        }
+        res.redirect('/api-docs');
+    });
 });
 
 router.get('/logout', (req, res, next) => {
     /* #swagger.ignore = true */
 
     const isProd = process.env.NODE_ENV === 'production';
+    const isStaging = process.env.NODE_ENV === 'staging';
 
     req.logout((err) => {
         if (err) { return next(err); }
@@ -42,8 +49,8 @@ router.get('/logout', (req, res, next) => {
 
             res.clearCookie('connect.sid', {
                 path: '/',
-                secure: isProd,
-                sameSite: isProd ? 'none' : 'lax'
+                secure: isProd || isStaging,
+                sameSite: isProd || isStaging ? 'none' : 'lax'
             });
 
             res.redirect('/api-docs');
