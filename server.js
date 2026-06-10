@@ -43,19 +43,17 @@ app.use(cors({
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
 
-const sessionConfig = {
+app.use(session({
     secret: process.env.SESSION_SECRET || 'your-random-secret',
     resave: false,
-    saveUninitialized: false,
+    saveUninitialized: true,
     cookie: {
-        path: '/',
         secure: isProd || isStaging,
         sameSite: isProd || isStaging ? 'none' : 'lax',
         maxAge: 24 * 60 * 60 * 1000
     }
-};
+}));
 
-app.use(session(sessionConfig));
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -71,13 +69,17 @@ process.on('uncaughtException', (err, origin) => {
     console.error(`Caught exception: ${err}\nException origin: ${origin}`);
 });
 
-mongodb.initDb((err) => {
-    if (err) {
-        console.error(err.message || err);
-        process.exit(1);
-    } else {
-        app.listen(port, () => {
-            console.log(`Running on port ${port}`);
-        });
-    }
-});
+module.exports = app;
+
+if (require.main === module) {
+    mongodb.initDb((err) => {
+        if (err) {
+            console.error(err.message || err);
+            process.exit(1);
+        } else {
+            app.listen(port, () => {
+                console.log(`Running on port ${port}`);
+            });
+        }
+    });
+}
