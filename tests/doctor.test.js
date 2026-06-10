@@ -37,6 +37,7 @@ describe('Doctor Routes', () => {
             expect(Array.isArray(all.body)).toBe(true);
             expect(all.body.length).toBeGreaterThan(0);
             const id = all.body[0]._id;
+            const res = await request(app).get(`/doctors/${id}`);
             expect(res.statusCode).toBe(200);
             expect(res.body).toHaveProperty('_id');
         }, 15000);
