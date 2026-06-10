@@ -3,7 +3,6 @@
 // Modified: Raphael Daveal
 
 const express = require('express');
-const cors = require('cors');
 const bodyParser = require('body-parser');
 const mongodb = require('./database/connect');
 const passport = require('passport');
@@ -31,27 +30,13 @@ if (isProd) {
     swaggerDocument.schemes = ['http', 'https'];
 }
 
-app.use(cors({
-    origin: isProd
-        ? 'https://health-clinic-app.onrender.com'
-        : isStaging
-        ? 'https://health-clinic-app-staging.onrender.com'
-        : `http://localhost:${port}`,
-    credentials: true
-}));
-
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(session({
     secret: process.env.SESSION_SECRET || 'your-random-secret',
     resave: false,
-    saveUninitialized: true,
-    cookie: {
-        secure: isProd || isStaging,
-        sameSite: isProd || isStaging ? 'none' : 'lax',
-        maxAge: 24 * 60 * 60 * 1000
-    }
+    saveUninitialized: true
 }));
 
 app.use(passport.initialize());
@@ -62,6 +47,13 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, {
         withCredentials: true
     }
 }));
+
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Z-Key');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    next();
+});
 
 app.use('/', require('./routes'));
 
