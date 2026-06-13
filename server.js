@@ -19,6 +19,10 @@ const app = express();
 const isProd = process.env.NODE_ENV === 'production';
 const isStaging = process.env.NODE_ENV === 'staging';
 
+if (isProd || isStaging) {
+    app.enable('trust proxy');
+}
+
 if (isProd) {
     swaggerDocument.host = 'health-clinic-app.onrender.com';
     swaggerDocument.schemes = ['https', 'http'];
